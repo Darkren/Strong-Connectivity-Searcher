@@ -64,7 +64,6 @@ public class KosarajuAlgorithm {
         invertGraph();
         initUsed();
         int addIndex= graphMatrix.size() - 1;
-        boolean firstIter = true;
         for (int i = graphMatrix.size() - 1; i >= 0; i--) {
             if (!used[order.get(i)]) {
                 components.add(createComponent(i + 1, addIndex));
