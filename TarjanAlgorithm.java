@@ -1,7 +1,3 @@
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
-
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -12,13 +8,13 @@ public class TarjanAlgorithm {
     private ArrayList<ArrayList<Boolean>> graphMatrix;
     private Stack<Integer> stack = new Stack<>();
     private boolean used[];
-    private int lowlinks[];
+    private int lowLinks[];
     private int indexes[];
     private int id;
 
     public TarjanAlgorithm (ArrayList<ArrayList<Boolean>> graphMatrix) {
         this.graphMatrix = graphMatrix;
-        lowlinks = new int[graphMatrix.size()];
+        lowLinks = new int[graphMatrix.size()];
         indexes = new int[graphMatrix.size()];
         used = new boolean[graphMatrix.size()];
         stack = new Stack<>();
@@ -31,7 +27,7 @@ public class TarjanAlgorithm {
             id = 0;
             for (int i = 0; i < graphMatrix.size(); i++) {
                 indexes[i] = 0;
-                lowlinks[i] = graphMatrix.size();
+                lowLinks[i] = graphMatrix.size();
                 used[i] = false;
             }
 
@@ -42,27 +38,27 @@ public class TarjanAlgorithm {
             return components;
         }
 
-        private void dfs(int v, ArrayList<ArrayList<Integer>> components)
-        {
-            used[v] = true;
-            lowlinks[v] = id;
-            indexes[v] = id++;
-            stack.push(v);
-            for (int i = 0; i < graphMatrix.size(); i++) {
-                if (!used[i] && graphMatrix.get(v).get(i)) {
-                    dfs(i, components);
-                    lowlinks[v] = Integer.min(lowlinks[v], lowlinks[i]);
-                } else if (stack.contains(i)) {
-                    lowlinks[v] = Integer.min(lowlinks[v], indexes[i]);
-                }
-            }
-            ArrayList<Integer> component = new ArrayList<>();
-            if (indexes[v] == lowlinks[v]) {
-                while (stack.peek() != v) {
-                    component.add(stack.pop());
-                }
-                component.add(stack.pop());
-                components.add(component);
+    private void dfs(int v, ArrayList<ArrayList<Integer>> components)
+    {
+        used[v] = true;
+        lowLinks[v] = id;
+        indexes[v] = id++;
+        stack.push(v);
+        for (int i = 0; i < graphMatrix.size(); i++) {
+            if (!used[i] && graphMatrix.get(v).get(i)) {
+                dfs(i, components);
+                lowLinks[v] = Integer.min(lowLinks[v], lowLinks[i]);
+            } else if (stack.contains(i) && graphMatrix.get(v).get(i)) {
+                lowLinks[v] = Integer.min(lowLinks[v], indexes[i]);
             }
         }
+        ArrayList<Integer> component = new ArrayList<>();
+        if (indexes[v] == lowLinks[v]) {
+            while (stack.peek() != v) {
+                component.add(stack.pop());
+            }
+            component.add(stack.pop());
+            components.add(component);
+        }
+    }
 }
