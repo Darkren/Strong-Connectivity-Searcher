@@ -24,9 +24,14 @@ public class KosarajuAlgorithm {
     private void invertGraph () {
         for (int i = 0; i < graphMatrix.size(); i++) {
             for (int j = i + 1; j < graphMatrix.get(i).size(); j++) {
-                if (graphMatrix.get(i).get(j) && !graphMatrix.get(j).get(i)) {
-                    graphMatrix.get(i).set(j, false);
-                    graphMatrix.get(j).set(i, true);
+                if (graphMatrix.get(i).get(j)) {
+                    if (!graphMatrix.get(j).get(i)) {
+                        graphMatrix.get(i).set(j, false);
+                        graphMatrix.get(j).set(i, true);
+                    }
+                } else if (graphMatrix.get(j).get(i)) {
+                    graphMatrix.get(i).set(j, true);
+                    graphMatrix.get(j).set(i, false);
                 }
             }
         }
@@ -66,7 +71,9 @@ public class KosarajuAlgorithm {
         int addIndex= graphMatrix.size() - 1;
         for (int i = graphMatrix.size() - 1; i >= 0; i--) {
             if (!used[order.get(i)]) {
-                components.add(createComponent(i + 1, addIndex));
+                if ((i + 1) <= addIndex) {
+                    components.add(createComponent(i + 1, addIndex));
+                }
                 addIndex = i;
                 dfs(order.get(i));
             }
